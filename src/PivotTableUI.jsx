@@ -114,7 +114,19 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
 
       var values = Object.keys(this.props.attrValues);
       console.log(values);
-      const [dayValues,monthValues,yearValues] = values[0].split('/').map(Number)
+      const MAX_VALUES = 800;
+           const getDateValues = (values) => {
+          for(const value of values) {
+            if(value === null || value === undefined) { 
+              continue;
+            }
+            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+            return  [dayValue,monthValue,yearValue];
+          }
+      return value;
+      };
+
+      const [dayValue, monthValue,yearValue] = getDateValues(values);
       var shown =  values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ? 
       values.filter(this.matchesFilterFromTo.bind(this)).sort(this.props.sorter) :
       values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
@@ -503,16 +515,45 @@ var PivotTableUI = function (_React$PureComponent2) {
   }, {
     key: 'addValuesToFilter',
     value: function addValuesToFilter(attribute, values) {
-      if (attribute in this.props.valueFilter) {
+
+    if (attribute in this.props.valueFilter) {
+      
+      var currentFilter = this.props.valueFilter[attribute] || {};
+      var currentCount = Object.keys(currentFilter).length;
+
+      var allValues = currentValues.concat(values);
+      
+      // Evitare conteggi alterati dopo contact
+      allValues = allValues.filter(function(value,index,array) {
+        return array.indexOf(value) === index;
+      });
+      
+      // massimo MAX_VALUES selezionati:
+      var valuesToKeep = allValues.slice(0,MAX_VALUES);
+
+      // Quelli oltre MAX_VALUES vanno deselezionati
+      var valueToRemove = allValues.slice(MAX_VALUES);
+
+      this.setValuesInFilter(attribute,valuesToKeep);
+        
         this.sendPropUpdate({
-          valueFilter: _defineProperty({}, attribute, values.reduce(function (r, v) {
+          valueFilter: _defineProperty({}, attribute, valuesToKeep.reduce(function (r, v) {
             r[v] = { $set: true };
             return r;
           }, {}))
         });
-      } else {
-        this.setValuesInFilter(attribute, values);
+
+         if(valuesToRemove.Length > 0) {
+          this.removeValuesFromFilter(attribute,valuesToRemove);
       }
+      
+      } else {
+      
+         // massimo MAX_VALUES selezionati:
+      var valuesToKeep = allValues.slice(0,MAX_VALUES);
+          
+        this.setValuesInFilter(attribute, values);
+      } 
     }
   }, {
     key: 'removeValuesFromFilter',
