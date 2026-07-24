@@ -114,7 +114,19 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
 
       var values = Object.keys(this.props.attrValues);
       console.log(values);
-      const [dayValues,monthValues,yearValues] = values[0].split('/').map(Number)
+      const getDateValues = (values) => {
+          for(const value of values) {
+            if(value === null || value === undefined) { 
+              continue;
+            }
+            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+            return  [dayValue,monthValue,yearValue];
+          }
+      return value;
+      };
+
+      const [dayValue, monthValue,yearValue] = getDateValues(values);
+      
       var shown =  values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ? 
       values.filter(this.matchesFilterFromTo.bind(this)).sort(this.props.sorter) :
       values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
