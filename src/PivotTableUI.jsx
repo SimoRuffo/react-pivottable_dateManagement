@@ -127,7 +127,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
       };
 
       const [dayValue, monthValue,yearValue] = getDateValues(values);
-      var shown =  values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ? 
+      var shown =  values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
       values.filter(this.matchesFilterFromTo.bind(this)).sort(this.props.sorter) :
       values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
 
@@ -174,7 +174,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
            showMenu &&  _react2.default.createElement(
             'div',
             null,
-           values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ?
+           values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
           _react2.default.createElement(
             'p',
             null,
@@ -222,7 +222,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 role: 'button',
                 className: 'pvtButton',
                 onClick: function onClick() {
-                 return values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ?
+                 return values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
                    _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilterFromTo.bind(_this2)))
                    :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)))
                 }
@@ -237,7 +237,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 role: 'button',
                 className: 'pvtButton',
                 onClick: function onClick() {
-                  return values.length > 0 && !isNaN(new Date(yearValues,monthValues-1,dayValues).getTime()) ?
+                  return values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
                    _this2.props.addValuesToFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2))) 
                    :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)))
                 }
