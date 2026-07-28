@@ -518,8 +518,7 @@ var PivotTableUI = function (_React$PureComponent2) {
       };
     }
   }, {
-    key: 'setValuesInFilter',
-    
+    key: 'setValuesInFilter',    
     value: function setValuesInFilter(attribute, values) {
       var valuesToKeep = values.slice(0,MAX_VALUES);
       this.sendPropUpdate({
@@ -530,7 +529,6 @@ var PivotTableUI = function (_React$PureComponent2) {
           }, {})
         })
       });
-    }
   }, {
     key: 'addValuesToFilter',
     value: function addValuesToFilter(attribute, values) {
@@ -549,9 +547,7 @@ var PivotTableUI = function (_React$PureComponent2) {
             r[v] = { $set: true };
             return r;
           }, {}))
-        });
-
-      
+        }      
          if(valuesToRemove.Length > 0) {
           this.removeValuesFromFilter(attribute,valuesToRemove);
       }
@@ -560,8 +556,7 @@ var PivotTableUI = function (_React$PureComponent2) {
         // setValuesInFilter applica già il limite di 800          
         this.setValuesInFilter(attribute, values);
       } 
-    }
-  }, {
+    }, {
     key: 'removeValuesFromFilter',
     value: function removeValuesFromFilter(attribute, values) {
       this.sendPropUpdate({
