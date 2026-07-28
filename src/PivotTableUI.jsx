@@ -76,7 +76,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
           return;
         }
 
-        this.props.removeValuesFromFinter(
+        this.props.removeValuesFromFilter(
           this.props.name,
           [value]
         );
