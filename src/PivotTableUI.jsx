@@ -61,9 +61,26 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
   _createClass(DraggableAttribute, [{
     key: 'toggleValue',
     value: function toggleValue(value) {
+
+      var totalValues = Object.keys(this.props.attrValues).length;
+      var excludedValues = Object.keys(this.props.valueFilter).length;
+
+      var selectedValues = totalValues - excludedValues;
+  
       if (value in this.props.valueFilter) {
-        this.props.removeValuesFromFilter(this.props.name, [value]);
+
+        if(selectedValues >= MAX_VALUES) {
+          return;
+        }
+
+        this.props.removeValuesFromFinter(
+          this.props.name,
+          [value]
+        );
+        
       } else {
+        // Sto Delezionando il valore:
+        // questo deve essere sempre consentito
         this.props.addValuesToFilter(this.props.name, [value]);
       }
     }
@@ -503,6 +520,7 @@ var PivotTableUI = function (_React$PureComponent2) {
   }, {
     key: 'setValuesInFilter',
     value: function setValuesInFilter(attribute, values) {
+      var valuesToKeep = values.slice(0,MAX_VALUES);
       this.sendPropUpdate({
         valueFilter: _defineProperty({}, attribute, {
           $set: values.reduce(function (r, v) {
@@ -518,40 +536,27 @@ var PivotTableUI = function (_React$PureComponent2) {
 
     if (attribute in this.props.valueFilter) {
       
-      var currentFilter = this.props.valueFilter[attribute] || {};
-      var currentCount = Object.keys(currentFilter).length;
+      var currentCount = Object.keys(this.props.valueFilter[attribute]).length;
 
-      var allValues = currentValues.concat(values);
-      
-      // Evitare conteggi alterati dopo contact
-      allValues = allValues.filter(function(value,index,array) {
-        return array.indexOf(value) === index;
-      });
-      
-      // massimo MAX_VALUES selezionati:
-      var valuesToKeep = allValues.slice(0,MAX_VALUES);
+      var available = Math.max(MAX_VALUE - currentCount,0);
 
-      // Quelli oltre MAX_VALUES vanno deselezionati
-      var valueToRemove = allValues.slice(MAX_VALUES);
+      var valueToAdd = values.slice(0,available);
+      var valuesToRemove = values.slice(available);
 
-      this.setValuesInFilter(attribute,valuesToKeep);
-        
-        this.sendPropUpdate({
-          valueFilter: _defineProperty({}, attribute, valuesToKeep.reduce(function (r, v) {
+      if(valuesToAdd.length > 0) {
+          valueFilter: _defineProperty({}, attribute, valuesToAdd.reduce(function (r, v) {
             r[v] = { $set: true };
             return r;
           }, {}))
         });
 
+      
          if(valuesToRemove.Length > 0) {
           this.removeValuesFromFilter(attribute,valuesToRemove);
       }
       
       } else {
-      
-         // massimo MAX_VALUES selezionati:
-      var valuesToKeep = allValues.slice(0,MAX_VALUES);
-          
+        // setValuesInFilter applica già il limite di 800          
         this.setValuesInFilter(attribute, values);
       } 
     }
