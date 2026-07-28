@@ -43,6 +43,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// Constant
+      const MAX_VALUES = 800;
+
 /* eslint-disable react/prop-types */
 // eslint can't see inherited propTypes!
 
@@ -131,7 +134,6 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
 
       var values = Object.keys(this.props.attrValues);
       console.log(values);
-      const MAX_VALUES = 800;
            const getDateValues = (values) => {
           for(const value of values) {
             if(value === null || value === undefined) { 
