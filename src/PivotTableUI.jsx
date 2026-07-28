@@ -519,6 +519,7 @@ var PivotTableUI = function (_React$PureComponent2) {
     }
   }, {
     key: 'setValuesInFilter',
+    
     value: function setValuesInFilter(attribute, values) {
       var valuesToKeep = values.slice(0,MAX_VALUES);
       this.sendPropUpdate({
