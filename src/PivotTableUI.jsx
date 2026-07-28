@@ -540,7 +540,7 @@ var PivotTableUI = function (_React$PureComponent2) {
       
       var currentCount = Object.keys(this.props.valueFilter[attribute]).length;
 
-      var available = Math.max(MAX_VALUE - currentCount,0);
+      var available = Math.max(MAX_VALUES - currentCount,0);
 
       var valueToAdd = values.slice(0,available);
       var valuesToRemove = values.slice(available);
