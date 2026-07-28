@@ -529,6 +529,7 @@ var PivotTableUI = function (_React$PureComponent2) {
           }, {})
         })
       });
+  }
   }, {
     key: 'addValuesToFilter',
     value: function addValuesToFilter(attribute, values) {
@@ -556,7 +557,8 @@ var PivotTableUI = function (_React$PureComponent2) {
         // setValuesInFilter applica già il limite di 800          
         this.setValuesInFilter(attribute, values);
       } 
-    }, {
+    }
+  }, {
     key: 'removeValuesFromFilter',
     value: function removeValuesFromFilter(attribute, values) {
       this.sendPropUpdate({
