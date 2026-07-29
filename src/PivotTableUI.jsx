@@ -72,10 +72,6 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
   
       if (value in this.props.valueFilter) {
 
-        if(selectedValues >= MAX_VALUES) {
-          return;
-        }
-
         this.props.removeValuesFromFilter(
           this.props.name,
           [value]
@@ -134,11 +130,9 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
 
       var values = Object.keys(this.props.attrValues);
       console.log(values);
-           const getDateValues = (values) => {
+      const getDateValues = (values) => {
           for(const value of values) {
-            if(value === null || value === undefined) { 
-              continue;
-            }
+          if(value !== null || value !== undefined) {
             const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
             return  [dayValue,monthValue,yearValue];
           }
@@ -277,7 +271,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                   onClick: function onClick() {
                     return _this2.toggleValue(x);
                   },
-                  className: x in _this2.props.valueFilter ? '' : 'selected'
+                  className: x.lenght > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'select'  : x in _this2.props.valueFilter ? '' : 'select'
                 },
                 _react2.default.createElement(
                   'a',
