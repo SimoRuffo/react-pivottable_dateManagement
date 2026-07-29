@@ -22,7 +22,7 @@ var _immutabilityHelper2 = _interopRequireDefault(_immutabilityHelper);
 var _Utilities = require('./Utilities');
 
 var _PivotTable = require('./PivotTable');
-'
+
 var _PivotTable2 = _interopRequireDefault(_PivotTable);
 
 var _reactSortablejs = require('react-sortablejs');
