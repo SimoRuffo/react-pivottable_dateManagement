@@ -524,7 +524,7 @@ var PivotTableUI = function (_React$PureComponent2) {
       var valuesToKeep = values.slice(0,MAX_VALUES);
       this.sendPropUpdate({
         valueFilter: _defineProperty({}, attribute, {
-          $set: values.reduce(function (r, v) {
+          $set: valuesToKeep.reduce(function (r, v) {
             r[v] = true;
             return r;
           }, {})
