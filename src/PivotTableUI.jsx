@@ -542,7 +542,7 @@ var PivotTableUI = function (_React$PureComponent2) {
 
       var available = Math.max(MAX_VALUES - currentCount,0);
 
-      var valueToAdd = values.slice(0,available);
+      var valuesToAdd = values.slice(0,available);
       var valuesToRemove = values.slice(available);
 
       if(valuesToAdd.length > 0) {
