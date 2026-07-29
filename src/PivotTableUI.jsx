@@ -535,7 +535,7 @@ var PivotTableUI = function (_React$PureComponent2) {
     key: 'addValuesToFilter',
     value: function addValuesToFilter(attribute, values) {
 
-    if (value in this.props.valueFilter) {
+    if (values in this.props.valueFilter) {
       
       var currentCount = Object.keys(this.props.valueFilter[attribute]).length;
 
