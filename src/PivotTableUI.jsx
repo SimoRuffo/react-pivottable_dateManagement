@@ -64,14 +64,18 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
   _createClass(DraggableAttribute, [{
     key: 'toggleValue',
     value: function toggleValue(value) {
-
-      var totalValues = Object.keys(this.props.attrValues).length;
-      var excludedValues = Object.keys(this.props.valueFilter).length;
-
-      var selectedValues = totalValues - excludedValues;
   
       if (value in this.props.valueFilter) {
 
+        var totalValues = Object.keys(this.props.attrValues).length;
+        var excludedValues = Object.keys(this.props.valueFilter).length;
+
+        var selectedValues = totalValues - excludedValues;
+        
+        if(selectedValues >= MAX_VALUES) {
+          return;
+        }
+        
         this.props.removeValuesFromFilter(
           this.props.name,
           [value]
