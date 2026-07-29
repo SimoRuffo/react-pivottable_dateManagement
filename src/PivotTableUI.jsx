@@ -136,6 +136,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
             const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
             return  [dayValue,monthValue,yearValue];
           }
+        }
       return value;
       };
 
@@ -272,7 +273,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                     return _this2.toggleValue(x);
                   },
                   className: x.lenght > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'select'  : x in _this2.props.valueFilter ? '' : 'select'
-                },{
+                },
                 _react2.default.createElement(
                   'a',
                   { className: 'pvtOnly', onClick: function onClick(e) {
