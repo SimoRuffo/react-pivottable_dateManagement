@@ -22,7 +22,7 @@ var _immutabilityHelper2 = _interopRequireDefault(_immutabilityHelper);
 var _Utilities = require('./Utilities');
 
 var _PivotTable = require('./PivotTable');
-
+'
 var _PivotTable2 = _interopRequireDefault(_PivotTable);
 
 var _reactSortablejs = require('react-sortablejs');
@@ -276,7 +276,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                   onClick: function onClick() {
                     return _this2.toggleValue(x);
                   },
-                  className: x.lenght > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'select'  : x in _this2.props.valueFilter ? '' : 'select'
+                  className: x.lenght > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'
                 },
                 _react2.default.createElement(
                   'a',
