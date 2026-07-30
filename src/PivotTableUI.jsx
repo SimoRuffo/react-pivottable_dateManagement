@@ -242,7 +242,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 onClick: function onClick() {
                  return values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
                    _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilterFromTo.bind(_this2)).slice(0,MAX_VALUES))
-                   :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)).slice(0,MAX_VALUES)
+                   :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)).slice(0,MAX_VALUES))
                 }
               },
               'Select ',
