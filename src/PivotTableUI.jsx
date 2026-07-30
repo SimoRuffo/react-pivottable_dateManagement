@@ -524,7 +524,7 @@ var PivotTableUI = function (_React$PureComponent2) {
       var valuesToKeep = values.slice(0,MAX_VALUES);
       this.sendPropUpdate({
         valueFilter: _defineProperty({}, attribute, {
-          $set: valuesToKeep.reduce(function (r, v) {
+          $merge: valuesToKeep.reduce(function (r, v) {
             r[v] = true;
             return r;
           }, {})
@@ -535,8 +535,21 @@ var PivotTableUI = function (_React$PureComponent2) {
     key: 'addValuesToFilter',
     value: function addValuesToFilter(attribute, values) {
 
-    if (values in this.props.valueFilter) {
+  console.log("ATTRIBUTE:", attribute);
+  console.log("GLOBAL VALUE FILTER:", this.props.valueFilter);
+  console.log(
+    "CHIAVI GLOBALI:",
+    Object.keys(this.props.valueFilter || {})
+  );
+  console.log(
+    "ATTRIBUTE PRESENTE:",
+    attribute in (this.props.valueFilter || {})
+  );
+
       
+    if (values in this.props.valueFilter) {
+          console.log("ADD: ramo IF");
+
       var currentCount = Object.keys(this.props.valueFilter[attribute]).length;
 
       var available = Math.max(MAX_VALUES - currentCount,0);
