@@ -246,7 +246,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 }
               },
               'Select ',
-              (values.length === shown.length) ? (value.length > MAX_VALUES) ? '800' : 'All' : shown.length
+              (values.length === shown.length) ? (values.length > MAX_VALUES) ? '800' : 'All' : shown.length
             ),
             ' ',
             _react2.default.createElement(
