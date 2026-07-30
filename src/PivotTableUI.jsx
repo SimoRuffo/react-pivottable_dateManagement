@@ -241,12 +241,12 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 className: 'pvtButton',
                 onClick: function onClick() {
                  return values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-                   _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilterFromTo.bind(_this2)))
-                   :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)))
+                   _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilterFromTo.bind(_this2)).slice(0,MAX_VALUES))
+                   :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)).slice(0,MAX_VALUES)
                 }
               },
               'Select ',
-              values.length === shown.length ? 'All' : shown.length
+              (values.length === shown.length) ? (value.length > MAX_VALUES) ? '800' : 'All' : shown.length
             ),
             ' ',
             _react2.default.createElement(
@@ -256,8 +256,8 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                 className: 'pvtButton',
                 onClick: function onClick() {
                   return values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-                   _this2.props.addValuesToFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2))) 
-                   :  _this2.props.removeValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)))
+                   _this2.props.addValuesToFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilterFromTo.bind(_this2))) 
+                   :  _this2.props.addValuesFromFilter(_this2.props.name, Object.keys(_this2.props.attrValues).filter(_this2.matchesFilter.bind(_this2)))
                 }
               },
               'Deselect ',
@@ -276,7 +276,7 @@ var DraggableAttribute = exports.DraggableAttribute = function (_React$Component
                   onClick: function onClick() {
                     return _this2.toggleValue(x);
                   },
-                  className: x.lenght > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'
+                  className: x.length > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'
                 },
                 _react2.default.createElement(
                   'a',
