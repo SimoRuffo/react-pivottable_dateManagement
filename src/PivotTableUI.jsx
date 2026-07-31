@@ -396,6 +396,7 @@ class PivotTableUI extends React.PureComponent {
         },
 
       });
+	  }
     } else {
    // setValuesInFilter applica già il limite di 800          
         this.setValuesInFilter(attribute, values);
