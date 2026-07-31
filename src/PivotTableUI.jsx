@@ -156,16 +156,15 @@ export class DraggableAttribute extends React.Component {
                 onClick={() =>
                   this.props.removeValuesFromFilter(
                     this.props.name,
-                    values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-                    
-                    (Object.keys(this.props.attrValues).filter(
-                      this.matchesFilterFromTo.bind(this).slice(0,MAX_VALUES)
-                    )) : (
+					 values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
+						Object.keys(this.props.attrValues).filter(
+                      this.matchesFilterFromTo.bind(this)
+                    ).slice(0,MAX_VALUES)
+					 :
                     Object.keys(this.props.attrValues).filter(
-                      this.matchesFilter.bind(this).slice(0,MAX_VALUES)
-                    ))
-                  )
-                }
+                      this.matchesFilter.bind(this)
+                    ).slice(0,MAX_VALUES)
+					)}
               >
                 Select {values.length === shown.length ? (values.length > MAX_VALUES ? '800' :  'All' ) : shown.length}
               </a>{' '}
@@ -176,12 +175,10 @@ export class DraggableAttribute extends React.Component {
                   this.props.addValuesToFilter(
                     this.props.name,
                     values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-                    ( 
                     	Object.keys(this.props.attrValues).filter(
-                      this.matchesFilterFromTo.bind(this)
-                    ): (Object.keys(this.props.attrValues).filter(
+                      this.matchesFilterFromTo.bind(this))
+					  : Object.keys(this.props.attrValues).filter(
                       this.matchesFilter.bind(this))
-                    )
                   )
                 }
               >
