@@ -115,8 +115,9 @@ export class DraggableAttribute extends React.Component {
 
           {showMenu && (
             <p>
-            values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-            ( <input
+				{ values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
+            ( <>
+			<input
                 type="date"
                 placeholder="data da"
                 className="pvtSearch"
@@ -137,7 +138,7 @@ export class DraggableAttribute extends React.Component {
                     filterTextTo: e.target.value,
 				       })
                 }
-              /> ) : (
+              /> </> ):(
               <input
                 type="text"
                 placeholder="Filter values"
@@ -148,7 +149,7 @@ export class DraggableAttribute extends React.Component {
                     filterText: e.target.value,
                   })
                 }
-              />  )
+              /> )}
               <br />
               <a
                 role="button"
