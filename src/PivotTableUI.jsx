@@ -167,7 +167,7 @@ export class DraggableAttribute extends React.Component {
                   )
                 }
               >
-                Select {values.length === shown.length ? (values.length > MAX_VALUES) ? '800'  'All' : shown.length}
+                Select {values.length === shown.length ? (values.length > MAX_VALUES ? '800' :  'All' ) : shown.length}
               </a>{' '}
               <a
                 role="button"
