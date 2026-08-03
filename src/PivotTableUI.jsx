@@ -80,11 +80,13 @@ export class DraggableAttribute extends React.Component {
     const isDate = Object.keys(this.props.attrValues);
       const getDateValues = (values) => {
           for(const value of values) {
-          if(value !== null || value !== undefined) {
-            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
-            return  [dayValue,monthValue,yearValue];
-          }
-     return value;
+	          if(value !== null || value !== undefined) {
+	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+	            return  [dayValue,monthValue,yearValue];
+	          }
+		  } 
+			return values;
+
     };   
     
     const [dayValue, monthValue,yearValue] = getDateValues(isDate);
