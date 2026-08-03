@@ -76,9 +76,10 @@ export class DraggableAttribute extends React.Component {
   getFilterBox() {
     const showMenu =
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
-
+	
     const isDate = Object.keys(this.props.attrValues);
-      const getDateValues = (values) => {
+    
+	const getDateValues = (values) => {
           for(const value of values) {
 	          if(value !== null || value !== undefined) {
 	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
@@ -86,7 +87,6 @@ export class DraggableAttribute extends React.Component {
 	          }
 		  } 
 			return values;
-
     };   
     
     const [dayValue, monthValue,yearValue] = getDateValues(isDate);
