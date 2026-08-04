@@ -76,20 +76,20 @@ export class DraggableAttribute extends React.Component {
   getFilterBox() {
     const showMenu =
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
-	
-    const isDate = Object.keys(this.props.attrValues);
+
+      const values = Object.keys(this.props.attrValues);
     
-	const getDateValues = (values) => {
-          for(const value of values) {
+	const getDateValues = (data) => {
+          for(const value of data) {
 	          if(value !== null || value !== undefined) {
 	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
 	            return  [dayValue,monthValue,yearValue];
 	          }
 		  } 
-			return values;
+			return data;
     };   
     
-    const [dayValue, monthValue,yearValue] = getDateValues(isDate);
+    const [dayValue, monthValue,yearValue] = getDateValues(values);
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
       values.filter(this.matchesFilterFromTo.bind(this)).sort(this.props.sorter) :
