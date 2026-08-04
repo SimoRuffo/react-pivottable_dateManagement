@@ -196,7 +196,7 @@ export class DraggableAttribute extends React.Component {
                 <p
                   key={x}
                   onClick={() => this.toggleValue(x)}
-                  className={x.length > _this2.props.max_values ? x.slice(0,_this2.props.max_values) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'}
+                  className={x.length > this.props.max_values ? x.slice(0,this.props.max_values) in this.props.valueFilter ? '' : 'selected'  : x in this.props.valueFilter ? '' : 'selected'}
                 >
                   <a className="pvtOnly" onClick={e => this.selectOnly(e, x)}>
                     only
