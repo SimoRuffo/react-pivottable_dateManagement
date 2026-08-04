@@ -408,8 +408,20 @@ class PivotTableUI extends React.PureComponent {
   }
 
   removeValuesFromFilter(attribute, values) {
-     const excludedValues = this.props.valueFilter[attribute] || {};
+     
+  const excludedValues = this.props.valueFilter[attribute] || {};
 
+ // Usa this.state.attrValues oppure this.props.attrValues
+  // in base a dove sono memorizzati nel componente.
+  const attributeValues =
+    this.props.attrValues &&
+    this.props.attrValues[attribute]
+      ? this.props.attrValues[attribute]
+      : {};
+
+  const totalValuesCount = Object.keys(attributeValues).length
+
+	  
   // valueFilter contiene i deselezionati
   const excludedCount = Object.keys(excludedValues).length;
   const selectedCount = totalValuesCount - excludedCount;
@@ -419,15 +431,22 @@ class PivotTableUI extends React.PureComponent {
     0
   );
 
-  // Considera soltanto valori effettivamente deselezionati
-  const valuesToSelect = values
-    .filter(value => value in excludedValues)
+    // Considera soltanto valori realmente esclusi,
+  // evitando eventuali duplicati.
+  const valuesToSelect = Array.from(new Set(values))
+    .filter(value =>
+      Object.prototype.hasOwnProperty.call(
+        excludedValues,
+        value
+      )
+    )
     .slice(0, available);
 
   if (valuesToSelect.length === 0) {
     return;
   }
-    this.sendPropUpdate({
+  
+  this.sendPropUpdate({
       valueFilter: {[attribute]: {$unset: valuesToSelect}},
     });
   }
