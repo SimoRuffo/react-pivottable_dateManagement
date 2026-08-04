@@ -23,7 +23,7 @@ export class DraggableAttribute extends React.Component {
         
         var selectedValues = totalValues - excludedValues;
         
-        if(selectedValues >= MAX_VALUES) {
+        if(selectedValues >= this.ptops.max_values) {
           return;
         }
       this.props.removeValuesFromFilter(this.props.name, [value]);
@@ -162,14 +162,14 @@ export class DraggableAttribute extends React.Component {
 					 values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
 						Object.keys(this.props.attrValues).filter(
                       this.matchesFilterFromTo.bind(this)
-                    ).slice(0,MAX_VALUES)
+                    ).slice(0,this.props.max_values)
 					 :
                     Object.keys(this.props.attrValues).filter(
                       this.matchesFilter.bind(this)
-                    ).slice(0,MAX_VALUES)
+                    ).slice(0,this.props.max_values)
 					)}
               >
-                Select {values.length === shown.length ? (values.length > MAX_VALUES ? '800' :  'All' ) : shown.length}
+                Select {values.length === shown.length ? (values.length > this.props.max_values ? this.props.max_values :  'All' ) : shown.length}
               </a>{' '}
               <a
                 role="button"
@@ -196,7 +196,7 @@ export class DraggableAttribute extends React.Component {
                 <p
                   key={x}
                   onClick={() => this.toggleValue(x)}
-                  className={x.length > MAX_VALUES ? x.slice(0,MAX_VALUES) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'}
+                  className={x.length > _this2.props.max_values ? x.slice(0,_this2.props.max_values) in _this2.props.valueFilter ? '' : 'selected'  : x in _this2.props.valueFilter ? '' : 'selected'}
                 >
                   <a className="pvtOnly" onClick={e => this.selectOnly(e, x)}>
                     only
@@ -316,6 +316,7 @@ class PivotTableUI extends React.PureComponent {
       openDropdown: false,
       attrValues: {},
       materializedInput: [],
+	 max_values: 800,
     };
   }
 
@@ -372,7 +373,7 @@ class PivotTableUI extends React.PureComponent {
   }
 
   setValuesInFilter(attribute, values) {
-      var valuesToKeep = values.slice(0,MAX_VALUES);
+      var valuesToKeep = values.slice(0,this.props.max_values);
     this.sendPropUpdate({
       valueFilter: {
         [attribute]: {
@@ -414,7 +415,7 @@ class PivotTableUI extends React.PureComponent {
   const selectedCount = totalValuesCount - excludedCount;
 
   const available = Math.max(
-    MAX_VALUES - selectedCount,
+    this.props.max_values - selectedCount,
     0
   );
 
@@ -681,6 +682,7 @@ PivotTableUI.propTypes = Object.assign({}, PivotTable.propTypes, {
   hiddenFromDragDrop: PropTypes.arrayOf(PropTypes.string),
   unusedOrientationCutoff: PropTypes.number,
   menuLimit: PropTypes.number,
+ max_values: PropTypes.number,
 });
 
 PivotTableUI.defaultProps = Object.assign({}, PivotTable.defaultProps, {
@@ -689,6 +691,7 @@ PivotTableUI.defaultProps = Object.assign({}, PivotTable.defaultProps, {
   hiddenFromDragDrop: [],
   unusedOrientationCutoff: 85,
   menuLimit: 500,
+max_values:800,
 });
 
 export default PivotTableUI;
