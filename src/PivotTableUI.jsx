@@ -16,16 +16,16 @@ export class DraggableAttribute extends React.Component {
   }
 
   toggleValue(value) {
-    if (value in this.props.valueFilter) {
-     var totalValues = Object.keys(this.props.attrValues).length;
-     var excludedValues = Object.keys(this.props.valueFilter).length;
+ //   if (value in this.props.valueFilter) {
+ //    var totalValues = Object.keys(this.props.attrValues).length;
+ //    var excludedValues = Object.keys(this.props.valueFilter).length;
         
         
-        var selectedValues = totalValues - excludedValues;
+//        var selectedValues = totalValues - excludedValues;
         
-        if(selectedValues >= this.ptops.max_values) {
-          return;
-        }
+//        if(selectedValues >= this.props.max_values) {
+//          return;
+//        }
       this.props.removeValuesFromFilter(this.props.name, [value]);
     } else {
        // Sto Delezionando il valore:
@@ -162,11 +162,11 @@ export class DraggableAttribute extends React.Component {
 					 values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
 						Object.keys(this.props.attrValues).filter(
                       this.matchesFilterFromTo.bind(this)
-                    ).slice(0,this.props.max_values)
+                    )
 					 :
                     Object.keys(this.props.attrValues).filter(
                       this.matchesFilter.bind(this)
-                    ).slice(0,this.props.max_values)
+                    )
 					)}
               >
                 Select {values.length === shown.length ? (values.length > this.props.max_values ? this.props.max_values :  'All' ) : shown.length}
@@ -196,7 +196,7 @@ export class DraggableAttribute extends React.Component {
                 <p
                   key={x}
                   onClick={() => this.toggleValue(x)}
-                  className={x.length > this.props.max_values ? x.slice(0,this.props.max_values) in this.props.valueFilter ? '' : 'selected'  : x in this.props.valueFilter ? '' : 'selected'}
+                  className={x in this.props.valueFilter ? '' : 'selected'}
                 >
                   <a className="pvtOnly" onClick={e => this.selectOnly(e, x)}>
                     only
@@ -214,7 +214,18 @@ export class DraggableAttribute extends React.Component {
   }
 
   toggleFilterBox() {
-    this.setState({open: !this.state.open});
+	const isOpening = !this.state.open;
+	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
+	{ 
+		const allValues = Object.keys(this.props.attrValues).sort(this.props.sorter);
+		if ( allValues.length > this.props.max_values){
+			const valueToExclide = allValues.slice(this.props.max_values);
+
+		this.props.setValuesInFilter(this.props.name,valuesToExclude);
+		}
+	}
+    this.setState({open: isOpening});
+
     this.props.moveFilterBoxToTop(this.props.name);
   }
 
@@ -256,6 +267,7 @@ DraggableAttribute.propTypes = {
   sorter: PropTypes.func.isRequired,
   menuLimit: PropTypes.number,
   zIndex: PropTypes.number,
+  max_values: PropTypes.number,
 };
 
 export class Dropdown extends React.PureComponent {
@@ -373,7 +385,7 @@ class PivotTableUI extends React.PureComponent {
   }
 
   setValuesInFilter(attribute, values) {
-      var valuesToKeep = values.slice(0,this.props.max_values);
+      var valuesToKeep = values;
     this.sendPropUpdate({
       valueFilter: {
         [attribute]: {
@@ -413,7 +425,7 @@ class PivotTableUI extends React.PureComponent {
   this.props.valueFilter[attribute] || {};
 
 const attributeValues =
-  this.props.attrValues[attribute] || {};
+  this.state.attrValues[attribute] || {};
 
 const totalValuesCount =
   Object.keys(attributeValues).length;
@@ -483,6 +495,7 @@ const selectedCount =
             valueFilter={this.props.valueFilter[x] || {}}
             sorter={getSort(this.props.sorters, x)}
             menuLimit={this.props.menuLimit}
+		    max_values={this.props.max_values}
             setValuesInFilter={this.setValuesInFilter.bind(this)}
             addValuesToFilter={this.addValuesToFilter.bind(this)}
             moveFilterBoxToTop={this.moveFilterBoxToTop.bind(this)}
@@ -699,7 +712,7 @@ PivotTableUI.propTypes = Object.assign({}, PivotTable.propTypes, {
   hiddenFromDragDrop: PropTypes.arrayOf(PropTypes.string),
   unusedOrientationCutoff: PropTypes.number,
   menuLimit: PropTypes.number,
- max_values: PropTypes.number,
+  max_values: PropTypes.number,
 });
 
 PivotTableUI.defaultProps = Object.assign({}, PivotTable.defaultProps, {
