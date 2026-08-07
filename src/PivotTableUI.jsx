@@ -219,7 +219,7 @@ export class DraggableAttribute extends React.Component {
 	{ 
 		const allValues = Object.keys(this.props.attrValues).sort(this.props.sorter);
 		if ( allValues.length > this.props.max_values){
-			const valueToExclide = allValues.slice(this.props.max_values);
+			const valuesToExclude = allValues.slice(this.props.max_values);
 
 		this.props.setValuesInFilter(this.props.name,valuesToExclude);
 		}
