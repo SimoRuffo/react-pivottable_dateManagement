@@ -16,7 +16,7 @@ export class DraggableAttribute extends React.Component {
   }
 
   toggleValue(value) {
- //   if (value in this.props.valueFilter) {
+    if (value in this.props.valueFilter) {
  //    var totalValues = Object.keys(this.props.attrValues).length;
  //    var excludedValues = Object.keys(this.props.valueFilter).length;
         
