@@ -409,14 +409,14 @@ class PivotTableUI extends React.PureComponent {
 
   removeValuesFromFilter(attribute, values) {
      
-  const excludedValues = this.props.valueFilter[attribute] || {};
+  const excludedValues = Object.keys(this.props.attrValues[attribute]) || {};
 
  // Usa this.state.attrValues oppure this.props.attrValues
   // in base a dove sono memorizzati nel componente.
   const attributeValues =
-    this.props.attrValues &&
-    this.props.attrValues[attribute]
-      ? this.props.attrValues[attribute]
+     Object.keys(this.props.attrValues) &&
+ Object.keys(this.props.attrValues[attribute])
+      ? Object.keys(this.props.attrValues[attribute])
       : {};
 
   const totalValuesCount = Object.keys(attributeValues).length
