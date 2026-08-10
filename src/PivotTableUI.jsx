@@ -88,11 +88,33 @@ export class DraggableAttribute extends React.Component {
 		  } 
 			return data;
     };   
-    
+
+
+	  const dateSorter = (a, b) => {
+  if (a === 'null') return 1;
+  if (b === 'null') return -1;
+
+  const partsA = a.split('/').map(Number);
+  const partsB = b.split('/').map(Number);
+
+  const dateA = new Date(
+    partsA[2],
+    partsA[1] - 1,
+    partsA[0]
+  );
+
+  const dateB = new Date(
+    partsB[2],
+    partsB[1] - 1,
+    partsB[0]
+  );
+
+  return dateA - dateB;
+};
     const [dayValue, monthValue,yearValue] = getDateValues(values);
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      values.filter(this.matchesFilterFromTo.bind(this)).sort(this.props.sorter) :
+      values.filter(this.matchesFilterFromTo.bind(this)).sort(dateSorter) :
       values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
 
 
