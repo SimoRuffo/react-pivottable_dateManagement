@@ -35,9 +35,9 @@ selectedFirstSorter(a, b) {
   return this.props.sorter(a, b);
 };
 
-	dateSorter(a, b) {
-  if (a === 'null') return 1;
-  if (b === 'null') return -1;
+dateSorter(a, b) {
+  if (a === 'null') return -1;
+  if (b === 'null') return 1;
 
   const partsA = a.split('/').map(Number);
   const partsB = b.split('/').map(Number);
@@ -123,13 +123,16 @@ getDateValues(data) {
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
 
       const values = Object.keys(this.props.attrValues);
+	const [dayValue, monthValue,yearValue] = this.getDateValues(values);
 
-
-    const [dayValue, monthValue,yearValue] = this.getDateValues(values);
+	  
+	  	values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
+		 sortValues = values.sort(this.dateSorter)
+		: sortValues = values.sort(this.props.sorter)
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      values.filter(this.matchesFilterFromTo.bind(this)).sort(this.selectedFirstSorter.bind(this)) :
-      values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
+      sortValues.filter(this.matchesFilterFromTo.bind(this)) :
+      sortValues.filter(this.matchesFilter.bind(this))
 
 
     return (
@@ -216,7 +219,7 @@ getDateValues(data) {
                     values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
                     	Object.keys(this.props.attrValues).filter(
                       this.matchesFilterFromTo.bind(this))
-					  : Object.keys(this.dateSorter).filter(
+					  : Object.keys(this.props.attrValues).filter(
                       this.matchesFilter.bind(this))
                   )
                 }
