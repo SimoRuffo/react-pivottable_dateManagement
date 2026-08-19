@@ -254,7 +254,7 @@ getDateValues(data) {
 		const allValues = Object.keys(this.props.attrValues);
 		const [dayValue, monthValue,yearValue] = getDateValues(values);
 
-		if !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
+		allValues.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
 		const sortValues = allValues.sort(dateSorter);
 		: const sortValues = allValues.sort(this.props.sorter);
 		
