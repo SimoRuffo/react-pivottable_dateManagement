@@ -254,9 +254,11 @@ getDateValues(data) {
 		const allValues = Object.keys(this.props.attrValues);
 		const [dayValue, monthValue,yearValue] = getDateValues(values);
 
+		let  sortValues = null;
+		
 		allValues.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		const sortValues = allValues.sort(dateSorter);
-		: const sortValues = allValues.sort(this.props.sorter);
+		 sortValues = allValues.sort(dateSorter);
+		: sortValues = allValues.sort(this.props.sorter);
 		
 		if ( sortValues.length > this.props.max_values){
 			const valuesToExclude = sortValues.slice(this.props.max_values);
