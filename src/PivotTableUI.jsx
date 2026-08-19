@@ -15,17 +15,40 @@ export class DraggableAttribute extends React.Component {
     this.state = {open: false, filterText: '',filterTextFrom:'',filterTextTo:''};
   }
 
+// order with selected First
+const selectedFirstSorter = (a, b) => {
+  const aSelected = !(a in this.props.valueFilter);
+  const bSelected = !(b in this.props.valueFilter);
+
+  // Se A è selezionato e B no → A prima
+  if (aSelected && !bSelected) {
+    return -1;
+  }
+
+  // Se B è selezionato e A no → B prima
+  if (!aSelected && bSelected) {
+    return 1;
+  }
+
+  // Entrambi selezionati o entrambi deselezionati:
+  // usa il sorter normale
+  return this.props.sorter(a, b);
+};
+
+// return date if date or return value: 
+	const getDateValues = (data) => {
+          for(const value of data) {
+	          if(value !== null && value !== undefined && value !== "null") {
+	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+	            return  [dayValue,monthValue,yearValue];
+	          }
+		  } 
+			return data;
+    };   
+	
   toggleValue(value) {
     if (value in this.props.valueFilter) {
- //    var totalValues = Object.keys(this.props.attrValues).length;
- //    var excludedValues = Object.keys(this.props.valueFilter).length;
-        
-        
-//        var selectedValues = totalValues - excludedValues;
-        
-//        if(selectedValues >= this.props.max_values) {
-//          return;
-//        }
+
       this.props.removeValuesFromFilter(this.props.name, [value]);
     } else {
        // Sto Delezionando il valore:
@@ -78,17 +101,6 @@ export class DraggableAttribute extends React.Component {
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
 
       const values = Object.keys(this.props.attrValues);
-    
-	const getDateValues = (data) => {
-          for(const value of data) {
-	          if(value !== null && value !== undefined && value !== "null") {
-	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
-	            return  [dayValue,monthValue,yearValue];
-	          }
-		  } 
-			return data;
-    };   
-
 
 	  const dateSorter = (a, b) => {
   if (a === 'null') return 1;
@@ -114,8 +126,8 @@ export class DraggableAttribute extends React.Component {
     const [dayValue, monthValue,yearValue] = getDateValues(values);
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      values.filter(this.matchesFilterFromTo.bind(this)).sort(dateSorter) :
-      values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
+      values.filter(this.matchesFilterFromTo.bind(this)).sort(selectedFirstSorter) :
+      values.filter(this.matchesFilter.bind(this)).sort(selectedFirstSorter) 
 
 
     return (
@@ -202,7 +214,7 @@ export class DraggableAttribute extends React.Component {
                     values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
                     	Object.keys(this.props.attrValues).filter(
                       this.matchesFilterFromTo.bind(this))
-					  : Object.keys(this.props.attrValues).filter(
+					  : Object.keys(dateSorter).filter(
                       this.matchesFilter.bind(this))
                   )
                 }
@@ -239,9 +251,15 @@ export class DraggableAttribute extends React.Component {
 	const isOpening = !this.state.open;
 	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
 	{ 
-		const allValues = Object.keys(this.props.attrValues).sort(this.props.sorter);
-		if ( allValues.length > this.props.max_values){
-			const valuesToExclude = allValues.slice(this.props.max_values);
+		const allValues = Object.keys(this.props.attrValues);
+		const [dayValue, monthValue,yearValue] = getDateValues(values);
+
+		if !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
+		const sortValues = allValues.sort(dateSorter);
+		: const sortValues = allValues.sort(this.props.sorter);
+		
+		if ( sortValues.length > this.props.max_values){
+			const valuesToExclude = sortValues.slice(this.props.max_values);
 
 		this.props.setValuesInFilter(this.props.name,valuesToExclude);
 		}
