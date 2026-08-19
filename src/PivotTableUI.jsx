@@ -252,7 +252,7 @@ getDateValues(data) {
 	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
 	{ 
 		const allValues = Object.keys(this.props.attrValues);
-		const [dayValue, monthValue,yearValue] = this.getDateValues(values);
+		const [dayValue, monthValue,yearValue] = this.getDateValues(allValues);
 
 		let  sortValues = null;
 		
