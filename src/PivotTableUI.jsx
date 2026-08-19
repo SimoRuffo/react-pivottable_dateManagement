@@ -16,7 +16,7 @@ export class DraggableAttribute extends React.Component {
   }
 
 // order with selected First
-const selectedFirstSorter = (a, b) => {
+selectedFirstSorter(a, b) {
   const aSelected = !(a in this.props.valueFilter);
   const bSelected = !(b in this.props.valueFilter);
 
@@ -36,7 +36,7 @@ const selectedFirstSorter = (a, b) => {
 };
 
 // return date if date or return value: 
-	const getDateValues = (data) => {
+getDateValues(data) {
           for(const value of data) {
 	          if(value !== null && value !== undefined && value !== "null") {
 	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
