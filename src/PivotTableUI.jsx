@@ -128,7 +128,7 @@ getDateValues(data) {
     const [dayValue, monthValue,yearValue] = this.getDateValues(values);
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      values.filter(this.matchesFilterFromTo.bind(this)).sort(this.selectedFirstSorter) :
+      values.filter(this.matchesFilterFromTo.bind(this)).sort(this.selectedFirstSorter.bind(this)) :
       values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
 
 
