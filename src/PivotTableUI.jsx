@@ -124,10 +124,10 @@ getDateValues(data) {
 
       const values = Object.keys(this.props.attrValues);
 	const [dayValue, monthValue,yearValue] = this.getDateValues(values);
-
+const sortValue = null;
 	  
 	  	values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		 sortValues = values.sort(this.dateSorter)
+		sortValues = values.sort(this.dateSorter)
 		: sortValues = values.sort(this.props.sorter)
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
