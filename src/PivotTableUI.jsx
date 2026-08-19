@@ -123,11 +123,11 @@ getDateValues(data) {
 
   return dateA - dateB;
 };
-    const [dayValue, monthValue,yearValue] = getDateValues(values);
+    const [dayValue, monthValue,yearValue] = this.getDateValues(values);
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      values.filter(this.matchesFilterFromTo.bind(this)).sort(selectedFirstSorter) :
-      values.filter(this.matchesFilter.bind(this)).sort(selectedFirstSorter) 
+      values.filter(this.matchesFilterFromTo.bind(this)).sort(this.selectedFirstSorter) :
+      values.filter(this.matchesFilter.bind(this)).sort(this.props.sorter) 
 
 
     return (
@@ -252,7 +252,7 @@ getDateValues(data) {
 	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
 	{ 
 		const allValues = Object.keys(this.props.attrValues);
-		const [dayValue, monthValue,yearValue] = getDateValues(values);
+		const [dayValue, monthValue,yearValue] = this.getDateValues(values);
 
 		let  sortValues = null;
 		
