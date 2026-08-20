@@ -492,7 +492,7 @@ const selectedCount =
 
   // Considera soltanto valori realmente esclusi,
   // evitando eventuali duplicati.
-  const valuesToSelect = Array.from(new Set(values)
+  const valuesToSelect = Array.from(new Set(values))
 .sort(isDate ? this.dateSorter : this.props.sorter)
 .filter(value =>
 Object.prototype.hasOwnProperty.call(
