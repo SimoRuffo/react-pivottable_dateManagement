@@ -1,67 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import {PivotData, sortAs, getSort} from './Utilities';
+import {PivotData, sortAs, getSort,dateSort,getDateValues,selectedFirstSorter} from './Utilities';
 import PivotTable from './PivotTable';
 import Sortable from 'react-sortablejs';
 import Draggable from 'react-draggable';
 
-/* eslint-disable react/prop-types */
-// eslint can't see inherited propTypes!
+
 
 export class DraggableAttribute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false, filterText: '',filterTextFrom:'',filterTextTo:''};
   }
-
-// order with selected First
-selectedFirstSorter(a, b) {
-  const aSelected = !(a in this.props.valueFilter);
-  const bSelected = !(b in this.props.valueFilter);
-
-  // Se A è selezionato e B no → A prima
-  if (aSelected && !bSelected) {
-    return -1;
-  }
-
-  // Se B è selezionato e A no → B prima
-  if (!aSelected && bSelected) {
-    return 1;
-  }
-
-  // Entrambi selezionati o entrambi deselezionati:
-  // usa il sorter normale
-  return this.props.sorter(a, b);
-};
-
-dateSorter(a, b) {
-  if (a === 'null') return -1;
-  if (b === 'null') return 1;
-
-  const partsA = a.split('/').map(Number);
-  const partsB = b.split('/').map(Number);
-
-  const dateA = new Date(
-    partsA[2],
-    partsA[1] - 1,
-    partsA[0]
-  );
-
-  const dateB = new Date(
-    partsB[2],
-    partsB[1] - 1,
-    partsB[0]
-  );
-
-  return dateA - dateB;
-};
-	
-// return date if date or return value: 
-getDateValues(data) {
-          for(const value of data) {
-	          if(value !== null && value !== undefined && value !== "null") {
-	            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
 	            return  [dayValue,monthValue,yearValue];
 	          }
 		  } 
@@ -123,11 +75,11 @@ getDateValues(data) {
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
 
       const values = Object.keys(this.props.attrValues);
-	const [dayValue, monthValue,yearValue] = this.getDateValues(values);
+	const [dayValue, monthValue,yearValue] = getDateValues(values);
 let sortValues = null;
 	  
 	  	values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		sortValues = values.sort(this.dateSorter)
+		sortValues = values.sort(dateSorter)
 		: sortValues = values.sort(this.props.sorter)
 
     const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
@@ -257,12 +209,12 @@ let sortValues = null;
 	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
 	{ 
 		const allValues = Object.keys(this.props.attrValues);
-		const [dayValue, monthValue,yearValue] = this.getDateValues(allValues);
+		const [dayValue, monthValue,yearValue] = getDateValues(allValues);
 
 		let  sortValues = null;
 		
 		allValues.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		 sortValues = allValues.sort(this.dateSorter)
+		 sortValues = allValues.sort(dateSorter)
 		: sortValues = allValues.sort(this.props.sorter)
 		
 		if ( sortValues.length > this.props.max_values){
@@ -487,13 +439,13 @@ const selectedCount =
     this.props.max_values - selectedCount,
     0
   );
-	  const [year,month,day] = this.getDateValues(values);
-	  const isDate = values.length > 0 && !isNaN(new Date(year,month,day).getTime());
+	  const [day,month,year] = getDateValues(values);
+	  const isDate = values.length > 0 && !isNaN(new Date(year,month-1,day).getTime());
 
   // Considera soltanto valori realmente esclusi,
   // evitando eventuali duplicati.
   const valuesToSelect = Array.from(new Set(values))
-.sort(isDate ? this.dateSorter : this.props.sorter)
+.sort(isDate ? dateSorter : this.props.sorter)
 .filter(value =>
 Object.prototype.hasOwnProperty.call(
 excludedValues,
