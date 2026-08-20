@@ -487,20 +487,20 @@ const selectedCount =
     this.props.max_values - selectedCount,
     0
   );
-	  const [year,month,day] = getDateValues(values);
+	  const [year,month,day] = this.getDateValues(values);
 	  const isDate = values.length > 0 && !isNaN(new Date(year,month,day).getTime());
 
-    // Considera soltanto valori realmente esclusi,
+  // Considera soltanto valori realmente esclusi,
   // evitando eventuali duplicati.
   const valuesToSelect = Array.from(new Set(values)
 .sort(isDate ? this.dateSorter : this.props.sorter)
-    .filter(value =>
-      Object.prototype.hasOwnProperty.call(
-        excludedValues,
+.filter(value =>
+Object.prototype.hasOwnProperty.call(
+excludedValues,
         value
       )
     )
-    .slice(0, available);
+.slice(0, available);
 
   if (valuesToSelect.length === 0) {
     return;
