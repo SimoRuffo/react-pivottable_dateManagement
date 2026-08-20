@@ -12,13 +12,7 @@ export class DraggableAttribute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false, filterText: '',filterTextFrom:'',filterTextTo:''};
-  }
-            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
-	            return  [dayValue,monthValue,yearValue];
-	          }
-		  } 
-			return data;
-    };   
+
 	
   toggleValue(value) {
     if (value in this.props.valueFilter) {
