@@ -12,7 +12,7 @@ export class DraggableAttribute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {open: false, filterText: '',filterTextFrom:'',filterTextTo:''};
-
+  }
 	
   toggleValue(value) {
     if (value in this.props.valueFilter) {
