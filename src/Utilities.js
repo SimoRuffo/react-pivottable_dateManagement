@@ -849,8 +849,13 @@ dateSorter(a, b) {
 getDateValues(data) {
           for(const value of data) {
 	          if(value !== null && value !== undefined && value !== "null") {
-	
-
+            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+	            return  [dayValue,monthValue,yearValue];
+	          }
+		  } 
+			return data;
+    };   
+}
 
 export {
   aggregatorTemplates,
