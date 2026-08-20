@@ -855,7 +855,6 @@ getDateValues(data) {
 		  } 
 			return data;
     };   
-}
 
 export {
   aggregatorTemplates,
