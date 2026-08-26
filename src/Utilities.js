@@ -638,60 +638,6 @@ class PivotData {
     }
   }
 
-
-// order with selected First
-selectedFirstSorter(a, b) {
-  const aSelected = !(a in this.props.valueFilter);
-  const bSelected = !(b in this.props.valueFilter);
-
-  // Se A è selezionato e B no → A prima
-  if (aSelected && !bSelected) {
-    return -1;
-  }
-
-  // Se B è selezionato e A no → B prima
-  if (!aSelected && bSelected) {
-    return 1;
-  }
-
-  // Entrambi selezionati o entrambi deselezionati:
-  // usa il sorter normale
-  return this.props.sorter(a, b);
-};
-
-dateSorter(a, b) {
-  if (a === 'null') return -1;
-  if (b === 'null') return 1;
-
-  const partsA = a.split('/').map(Number);
-  const partsB = b.split('/').map(Number);
-
-  const dateA = new Date(
-    partsA[2],
-    partsA[1] - 1,
-    partsA[0]
-  );
-
-  const dateB = new Date(
-    partsB[2],
-    partsB[1] - 1,
-    partsB[0]
-  );
-
-  return dateA - dateB;
-};
-	
-// return date if date or return value: 
-getDateValues(data) {
-          for(const value of data) {
-	          if(value !== null && value !== undefined && value !== "null") {
-            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
-	            return  [dayValue,monthValue,yearValue];
-	          }
-		  } 
-			return data;
-    };   
-	
   getColKeys() {
     this.sortKeys();
     return this.colKeys;
@@ -855,6 +801,60 @@ PivotData.propTypes = {
   rowOrder: PropTypes.oneOf(['key_a_to_z', 'value_a_to_z', 'value_z_to_a']),
   colOrder: PropTypes.oneOf(['key_a_to_z', 'value_a_to_z', 'value_z_to_a']),
 };
+
+// order with selected First
+selectedFirstSorter(a, b) {
+  const aSelected = !(a in this.props.valueFilter);
+  const bSelected = !(b in this.props.valueFilter);
+
+  // Se A è selezionato e B no → A prima
+  if (aSelected && !bSelected) {
+    return -1;
+  }
+
+  // Se B è selezionato e A no → B prima
+  if (!aSelected && bSelected) {
+    return 1;
+  }
+
+  // Entrambi selezionati o entrambi deselezionati:
+  // usa il sorter normale
+  return this.props.sorter(a, b);
+};
+
+dateSorter(a, b) {
+  if (a === 'null') return -1;
+  if (b === 'null') return 1;
+
+  const partsA = a.split('/').map(Number);
+  const partsB = b.split('/').map(Number);
+
+  const dateA = new Date(
+    partsA[2],
+    partsA[1] - 1,
+    partsA[0]
+  );
+
+  const dateB = new Date(
+    partsB[2],
+    partsB[1] - 1,
+    partsB[0]
+  );
+
+  return dateA - dateB;
+};
+	
+// return date if date or return value: 
+getDateValues(data) {
+          for(const value of data) {
+	          if(value !== null && value !== undefined && value !== "null") {
+            const [dayValue,monthValue,yearValue] = value.split('/').map(Number);
+	            return  [dayValue,monthValue,yearValue];
+	          }
+		  } 
+			return data;
+    };   
+	
 
 export {
   aggregatorTemplates,
