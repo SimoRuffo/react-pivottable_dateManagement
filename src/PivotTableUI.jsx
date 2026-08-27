@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import {PivotData, sortAs, getSort,dateSort,getDateValues,selectedFirstSorter} from './Utilities';
+import {PivotData, sortAs, getSort,dateSorter,getDateValues,selectedFirstSorter} from './Utilities';
 import PivotTable from './PivotTable';
 import Sortable from 'react-sortablejs';
 import Draggable from 'react-draggable';
