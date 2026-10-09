@@ -1,26 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import update from 'immutability-helper';
-import {PivotData, sortAs, getSort,dateSorter,getDateValues,selectedFirstSorter} from './Utilities';
-import PivotTable from './PivotTable';
-import Sortable from 'react-sortablejs';
-import Draggable from 'react-draggable';
-
-
+import React from "react";
+import PropTypes from "prop-types";
+import update from "immutability-helper";
+import {
+  PivotData,
+  sortAs,
+  getSort,
+  dateSorter,
+  getDateValues,
+  selectedFirstSorter,
+} from "./Utilities";
+import PivotTable from "./PivotTable";
+import Sortable from "react-sortablejs";
+import Draggable from "react-draggable";
 
 export class DraggableAttribute extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {open: false, filterText: '',filterTextFrom:'',filterTextTo:''};
+    this.state = {
+      open: false,
+      filterText: "",
+      filterTextFrom: "",
+      filterTextTo: "",
+    };
   }
-	
+
   toggleValue(value) {
     if (value in this.props.valueFilter) {
-
       this.props.removeValuesFromFilter(this.props.name, [value]);
     } else {
-       // Sto Delezionando il valore:
-        // questo deve essere sempre consentito
+      // Sto Delezionando il valore:
+      // questo deve essere sempre consentito
       this.props.addValuesToFilter(this.props.name, [value]);
     }
   }
@@ -32,8 +41,7 @@ export class DraggableAttribute extends React.Component {
       .includes(this.state.filterText.toLowerCase().trim());
   }
 
-
-matchesFilterFromTo(x) {
+  matchesFilterFromTo(x) {
     var from = this.state.filterTextFrom;
     var to = this.state.filterTextTo;
 
@@ -41,13 +49,13 @@ matchesFilterFromTo(x) {
     if (!x) return false;
 
     // Converte x da DD/MM/YYYY
-    var [day, month, year] = x.split('/').map(Number);
+    var [day, month, year] = x.split("/").map(Number);
 
     var current = new Date(year, month - 1, day);
 
     // Converte from e to da YYYY-MM-DD
-    var start = from ? new Date(from + 'T00:00:00') : null;
-    var end = to ? new Date(to + 'T23:59:59') : null;
+    var start = from ? new Date(from + "T00:00:00") : null;
+    var end = to ? new Date(to + "T23:59:59") : null;
 
     console.log("Current:", current);
     console.log("Start:", start);
@@ -59,15 +67,13 @@ matchesFilterFromTo(x) {
     if (end && current > end) return false;
 
     return true;
-}
-
-	
+  }
 
   selectOnly(e, value) {
     e.stopPropagation();
     this.props.setValuesInFilter(
       this.props.name,
-      Object.keys(this.props.attrValues).filter(y => y !== value)
+      Object.keys(this.props.attrValues).filter((y) => y !== value),
     );
   }
 
@@ -75,31 +81,36 @@ matchesFilterFromTo(x) {
     const showMenu =
       Object.keys(this.props.attrValues).length < this.props.menuLimit;
 
-      const values = Object.keys(this.props.attrValues);
-	const [dayValue, monthValue,yearValue] = getDateValues(values);
-let sortValues = null;
-	  
-	  	values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		sortValues = values.sort(dateSorter)
-		: sortValues = values.sort(this.props.sorter)
+    const values = Object.keys(this.props.attrValues);
+    const [dayValue, monthValue, yearValue] = getDateValues(values);
+    let sortValues = null;
 
-    const shown = values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ? 
-      sortValues.filter(this.matchesFilterFromTo.bind(this)) :
-      sortValues.filter(this.matchesFilter.bind(this))
+    values.length > 0 &&
+    !isNaN(new Date(yearValue, monthValue - 1, dayValue).getTime())
+      ? (sortValues = values.sort(dateSorter))
+      : (sortValues = values.sort(this.props.sorter));
 
+    const shown =
+      values.length > 0 &&
+      !isNaN(new Date(yearValue, monthValue - 1, dayValue).getTime())
+        ? sortValues.filter(this.matchesFilterFromTo.bind(this))
+        : sortValues.filter(this.matchesFilter.bind(this));
 
     return (
       <Draggable handle=".pvtDragHandle">
         <div
           className="pvtFilterBox"
           style={{
-            display: 'block',
-            cursor: 'initial',
+            display: "block",
+            cursor: "initial",
             zIndex: this.props.zIndex,
           }}
           onClick={() => this.props.moveFilterBoxToTop(this.props.name)}
         >
-          <a onClick={() => this.setState({open: false})} className="pvtCloseX">
+          <a
+            onClick={() => this.setState({ open: false })}
+            className="pvtCloseX"
+          >
             ×
           </a>
           <span className="pvtDragHandle">☰</span>
@@ -109,41 +120,48 @@ let sortValues = null;
 
           {showMenu && (
             <p>
-				{ values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-            ( <span>			<input
-                type="date"
-                placeholder="data da"
-                className="pvtSearch"
-                value={this.state.filterText}
-                onChange={e =>
-                  this.setState({
-                    filterTextFrom: e.target.value,
-				       })
-                }
-              />
-              <input
-                type="date"
-                placeholder="data a"
-                className="pvtSearch"
-                value={this.state.filterText}
-                onChange={e =>
-                  this.setState({
-                    filterTextTo: e.target.value,
-				       })
-                }
-              /> </span>
- ):(
-              <input
-                type="text"
-                placeholder="Filter values"
-                className="pvtSearch"
-                value={this.state.filterText}
-                onChange={e =>
-                  this.setState({
-                    filterText: e.target.value,
-                  })
-                }
-              /> )}
+              {values.length > 0 &&
+              !isNaN(
+                new Date(yearValue, monthValue - 1, dayValue).getTime(),
+              ) ? (
+                <span>
+                  {" "}
+                  <input
+                    type="date"
+                    placeholder="data da"
+                    className="pvtSearch"
+                    value={this.state.filterTextFrom}
+                    onChange={(e) =>
+                      this.setState({
+                        filterTextFrom: e.target.value,
+                      })
+                    }
+                  />
+                  <input
+                    type="date"
+                    placeholder="data a"
+                    className="pvtSearch"
+                    value={this.state.filterTextTo}
+                    onChange={(e) =>
+                      this.setState({
+                        filterTextTo: e.target.value,
+                      })
+                    }
+                  />{" "}
+                </span>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Filter values"
+                  className="pvtSearch"
+                  value={this.state.filterText}
+                  onChange={(e) =>
+                    this.setState({
+                      filterText: e.target.value,
+                    })
+                  }
+                />
+              )}
               <br />
               <a
                 role="button"
@@ -151,51 +169,64 @@ let sortValues = null;
                 onClick={() =>
                   this.props.removeValuesFromFilter(
                     this.props.name,
-					 values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-						Object.keys(this.props.attrValues).filter(
-                      this.matchesFilterFromTo.bind(this)
-                    )
-					 :
-                    Object.keys(this.props.attrValues).filter(
-                      this.matchesFilter.bind(this)
-                    )
-					)}
+                    values.length > 0 &&
+                      !isNaN(
+                        new Date(yearValue, monthValue - 1, dayValue).getTime(),
+                      )
+                      ? Object.keys(this.props.attrValues).filter(
+                          this.matchesFilterFromTo.bind(this),
+                        )
+                      : Object.keys(this.props.attrValues).filter(
+                          this.matchesFilter.bind(this),
+                        ),
+                  )
+                }
               >
-                Select {values.length === shown.length ? (values.length > this.props.max_values ? this.props.max_values :  'All' ) : shown.length}
-              </a>{' '}
+                Select{" "}
+                {values.length === shown.length
+                  ? values.length > this.props.max_values
+                    ? this.props.max_values
+                    : "All"
+                  : shown.length}
+              </a>{" "}
               <a
                 role="button"
                 className="pvtButton"
                 onClick={() =>
                   this.props.addValuesToFilter(
                     this.props.name,
-                    values.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-                    	Object.keys(this.props.attrValues).filter(
-                      this.matchesFilterFromTo.bind(this))
-					  : Object.keys(this.props.attrValues).filter(
-                      this.matchesFilter.bind(this))
+                    values.length > 0 &&
+                      !isNaN(
+                        new Date(yearValue, monthValue - 1, dayValue).getTime(),
+                      )
+                      ? Object.keys(this.props.attrValues).filter(
+                          this.matchesFilterFromTo.bind(this),
+                        )
+                      : Object.keys(this.props.attrValues).filter(
+                          this.matchesFilter.bind(this),
+                        ),
                   )
                 }
               >
-                Deselect {values.length === shown.length ? 'All' : shown.length}
+                Deselect {values.length === shown.length ? "All" : shown.length}
               </a>
             </p>
           )}
 
           {showMenu && (
             <div className="pvtCheckContainer">
-              {shown.map(x => (
+              {shown.map((x) => (
                 <p
                   key={x}
                   onClick={() => this.toggleValue(x)}
-                  className={x in this.props.valueFilter ? '' : 'selected'}
+                  className={x in this.props.valueFilter ? "" : "selected"}
                 >
-                  <a className="pvtOnly" onClick={e => this.selectOnly(e, x)}>
+                  <a className="pvtOnly" onClick={(e) => this.selectOnly(e, x)}>
                     only
                   </a>
                   <a className="pvtOnlySpacer">&nbsp;</a>
 
-                  {x === '' ? <em>null</em> : x}
+                  {x === "" ? <em>null</em> : x}
                 </p>
               ))}
             </div>
@@ -206,25 +237,25 @@ let sortValues = null;
   }
 
   toggleFilterBox() {
-	const isOpening = !this.state.open;
-	if( isOpening &&     Object.keys(this.props.valueFilter).length === 0) 
-	{ 
-		const allValues = Object.keys(this.props.attrValues);
-		const [dayValue, monthValue,yearValue] = getDateValues(allValues);
+    const isOpening = !this.state.open;
+    if (isOpening && Object.keys(this.props.valueFilter).length === 0) {
+      const allValues = Object.keys(this.props.attrValues);
+      const [dayValue, monthValue, yearValue] = getDateValues(allValues);
 
-		let  sortValues = null;
-		
-		allValues.length > 0 && !isNaN(new Date(yearValue,monthValue-1,dayValue).getTime()) ?
-		 sortValues = allValues.sort(dateSorter)
-		: sortValues = allValues.sort(this.props.sorter)
-		
-		if ( sortValues.length > this.props.max_values){
-			const valuesToExclude = sortValues.slice(this.props.max_values);
+      let sortValues = null;
 
-		this.props.setValuesInFilter(this.props.name,valuesToExclude);
-		}
-	}
-    this.setState({open: isOpening});
+      allValues.length > 0 &&
+      !isNaN(new Date(yearValue, monthValue - 1, dayValue).getTime())
+        ? (sortValues = allValues.sort(dateSorter))
+        : (sortValues = allValues.sort(this.props.sorter));
+
+      if (sortValues.length > this.props.max_values) {
+        const valuesToExclude = sortValues.slice(this.props.max_values);
+
+        this.props.setValuesInFilter(this.props.name, valuesToExclude);
+      }
+    }
+    this.setState({ open: isOpening });
 
     this.props.moveFilterBoxToTop(this.props.name);
   }
@@ -232,17 +263,17 @@ let sortValues = null;
   render() {
     const filtered =
       Object.keys(this.props.valueFilter).length !== 0
-        ? 'pvtFilteredAttribute'
-        : '';
+        ? "pvtFilteredAttribute"
+        : "";
     return (
       <li data-id={this.props.name}>
-        <span className={'pvtAttr ' + filtered}>
+        <span className={"pvtAttr " + filtered}>
           {this.props.name}
           <span
             className="pvtTriangle"
             onClick={this.toggleFilterBox.bind(this)}
           >
-            {' '}
+            {" "}
             ▾
           </span>
         </span>
@@ -273,29 +304,29 @@ DraggableAttribute.propTypes = {
 export class Dropdown extends React.PureComponent {
   render() {
     return (
-      <div className="pvtDropdown" style={{zIndex: this.props.zIndex}}>
+      <div className="pvtDropdown" style={{ zIndex: this.props.zIndex }}>
         <div
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             this.props.toggle();
           }}
           className={
-            'pvtDropdownValue pvtDropdownCurrent ' +
-            (this.props.open ? 'pvtDropdownCurrentOpen' : '')
+            "pvtDropdownValue pvtDropdownCurrent " +
+            (this.props.open ? "pvtDropdownCurrentOpen" : "")
           }
           role="button"
         >
-          <div className="pvtDropdownIcon">{this.props.open ? '×' : '▾'}</div>
+          <div className="pvtDropdownIcon">{this.props.open ? "×" : "▾"}</div>
           {this.props.current || <span>&nbsp;</span>}
         </div>
 
         {this.props.open && (
           <div className="pvtDropdownMenu">
-            {this.props.values.map(r => (
+            {this.props.values.map((r) => (
               <div
                 key={r}
                 role="button"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   if (this.props.current === r) {
                     this.props.toggle();
@@ -304,8 +335,8 @@ export class Dropdown extends React.PureComponent {
                   }
                 }}
                 className={
-                  'pvtDropdownValue ' +
-                  (r === this.props.current ? 'pvtDropdownActiveValue' : '')
+                  "pvtDropdownValue " +
+                  (r === this.props.current ? "pvtDropdownActiveValue" : "")
                 }
               >
                 {r}
@@ -328,7 +359,7 @@ class PivotTableUI extends React.PureComponent {
       openDropdown: false,
       attrValues: {},
       materializedInput: [],
-	 max_values: 800,
+      max_values: 800,
     };
   }
 
@@ -353,7 +384,7 @@ class PivotTableUI extends React.PureComponent {
     PivotData.forEachRecord(
       newState.data,
       this.props.derivedAttributes,
-      function(record) {
+      function (record) {
         newState.materializedInput.push(record);
         for (const attr of Object.keys(record)) {
           if (!(attr in newState.attrValues)) {
@@ -364,14 +395,14 @@ class PivotTableUI extends React.PureComponent {
           }
         }
         for (const attr in newState.attrValues) {
-          const value = attr in record ? record[attr] : 'null';
+          const value = attr in record ? record[attr] : "null";
           if (!(value in newState.attrValues[attr])) {
             newState.attrValues[attr][value] = 0;
           }
           newState.attrValues[attr][value]++;
         }
         recordsProcessed++;
-      }
+      },
     );
     this.setState(newState);
   }
@@ -381,11 +412,11 @@ class PivotTableUI extends React.PureComponent {
   }
 
   propUpdater(key) {
-    return value => this.sendPropUpdate({[key]: {$set: value}});
+    return (value) => this.sendPropUpdate({ [key]: { $set: value } });
   }
 
   setValuesInFilter(attribute, values) {
-      var valuesToKeep = values;
+    var valuesToKeep = values;
     this.sendPropUpdate({
       valueFilter: {
         [attribute]: {
@@ -399,77 +430,63 @@ class PivotTableUI extends React.PureComponent {
   }
 
   addValuesToFilter(attribute, values) {
-  
     if (attribute in this.props.valueFilter) {
-
-      if(values.length > 0) {
-      this.sendPropUpdate({
-        valueFilter: {
-          [attribute]: values.reduce((r, v) => {
-            r[v] = {$set: true};
-            return r;
-          }, {}),
-        },
-
-      });
-	  }
+      if (values.length > 0) {
+        this.sendPropUpdate({
+          valueFilter: {
+            [attribute]: values.reduce((r, v) => {
+              r[v] = { $set: true };
+              return r;
+            }, {}),
+          },
+        });
+      }
     } else {
-   // setValuesInFilter applica già il limite di 800          
-        this.setValuesInFilter(attribute, values);
+      // setValuesInFilter applica già il limite di 800
+      this.setValuesInFilter(attribute, values);
     }
   }
 
   removeValuesFromFilter(attribute, values) {
-     
- const excludedValues =
-  this.props.valueFilter[attribute] || {};
-  
-const attributeValues =
-  this.state.attrValues[attribute] || {};
+    const excludedValues = this.props.valueFilter[attribute] || {};
 
-const totalValuesCount =
-  Object.keys(attributeValues).length;
+    const attributeValues = this.state.attrValues[attribute] || {};
 
-const excludedCount =
-  Object.keys(excludedValues).length;
+    const totalValuesCount = Object.keys(attributeValues).length;
 
-const selectedCount =
-  totalValuesCount - excludedCount;
+    const excludedCount = Object.keys(excludedValues).length;
 
-  const available = Math.max(
-    this.props.max_values - selectedCount,
-    0
-  );
-	  const [day,month,year] = getDateValues(values);
-	  const isDate = values.length > 0 && !isNaN(new Date(year,month-1,day).getTime());
+    const selectedCount = totalValuesCount - excludedCount;
 
-  // Considera soltanto valori realmente esclusi,
-  // evitando eventuali duplicati.
-  const valuesToSelect = Array.from(new Set(values))
-.sort(isDate ? dateSorter : this.props.sorter)
-.filter(value =>
-Object.prototype.hasOwnProperty.call(
-excludedValues,
-        value
+    const available = Math.max(this.props.max_values - selectedCount, 0);
+    const [day, month, year] = getDateValues(values);
+    const isDate =
+      values.length > 0 && !isNaN(new Date(year, month - 1, day).getTime());
+
+    // Considera soltanto valori realmente esclusi,
+    // evitando eventuali duplicati.
+    const valuesToSelect = Array.from(new Set(values))
+      .sort(isDate ? dateSorter : this.props.sorter)
+      .filter((value) =>
+        Object.prototype.hasOwnProperty.call(excludedValues, value),
       )
-    )
-.slice(0, available);
+      .slice(0, available);
 
-  if (valuesToSelect.length === 0) {
-    return;
-  }
-  
-  this.sendPropUpdate({
-      valueFilter: {[attribute]: {$unset: valuesToSelect}},
+    if (valuesToSelect.length === 0) {
+      return;
+    }
+
+    this.sendPropUpdate({
+      valueFilter: { [attribute]: { $unset: valuesToSelect } },
     });
   }
 
   moveFilterBoxToTop(attribute) {
     this.setState(
       update(this.state, {
-        maxZIndex: {$set: this.state.maxZIndex + 1},
-        zIndices: {[attribute]: {$set: this.state.maxZIndex + 1}},
-      })
+        maxZIndex: { $set: this.state.maxZIndex + 1 },
+        zIndices: { [attribute]: { $set: this.state.maxZIndex + 1 } },
+      }),
     );
   }
 
@@ -481,16 +498,16 @@ excludedValues,
     return (
       <Sortable
         options={{
-          group: 'shared',
-          ghostClass: 'pvtPlaceholder',
-          filter: '.pvtFilterBox',
+          group: "shared",
+          ghostClass: "pvtPlaceholder",
+          filter: ".pvtFilterBox",
           preventOnFilter: false,
         }}
         tag="td"
         className={classes}
         onChange={onChange}
       >
-        {items.map(x => (
+        {items.map((x) => (
           <DraggableAttribute
             name={x}
             key={x}
@@ -498,7 +515,7 @@ excludedValues,
             valueFilter={this.props.valueFilter[x] || {}}
             sorter={getSort(this.props.sorters, x)}
             menuLimit={this.props.menuLimit}
-		    max_values={this.props.max_values}
+            max_values={this.props.max_values}
             setValuesInFilter={this.setValuesInFilter.bind(this)}
             addValuesToFilter={this.addValuesToFilter.bind(this)}
             moveFilterBoxToTop={this.moveFilterBoxToTop.bind(this)}
@@ -528,30 +545,30 @@ excludedValues,
         <Dropdown
           current={rendererName}
           values={Object.keys(this.props.renderers)}
-          open={this.isOpen('renderer')}
-          zIndex={this.isOpen('renderer') ? this.state.maxZIndex + 1 : 1}
+          open={this.isOpen("renderer")}
+          zIndex={this.isOpen("renderer") ? this.state.maxZIndex + 1 : 1}
           toggle={() =>
             this.setState({
-              openDropdown: this.isOpen('renderer') ? false : 'renderer',
+              openDropdown: this.isOpen("renderer") ? false : "renderer",
             })
           }
-          setValue={this.propUpdater('rendererName')}
+          setValue={this.propUpdater("rendererName")}
         />
       </td>
     );
 
     const sortIcons = {
       key_a_to_z: {
-        rowSymbol: '↕',
-        colSymbol: '↔',
-        next: 'value_a_to_z',
+        rowSymbol: "↕",
+        colSymbol: "↔",
+        next: "value_a_to_z",
       },
       value_a_to_z: {
-        rowSymbol: '↓',
-        colSymbol: '→',
-        next: 'value_z_to_a',
+        rowSymbol: "↓",
+        colSymbol: "→",
+        next: "value_z_to_a",
       },
-      value_z_to_a: {rowSymbol: '↑', colSymbol: '←', next: 'key_a_to_z'},
+      value_z_to_a: { rowSymbol: "↑", colSymbol: "←", next: "key_a_to_z" },
     };
 
     const aggregatorCell = (
@@ -559,20 +576,20 @@ excludedValues,
         <Dropdown
           current={this.props.aggregatorName}
           values={Object.keys(this.props.aggregators)}
-          open={this.isOpen('aggregators')}
-          zIndex={this.isOpen('aggregators') ? this.state.maxZIndex + 1 : 1}
+          open={this.isOpen("aggregators")}
+          zIndex={this.isOpen("aggregators") ? this.state.maxZIndex + 1 : 1}
           toggle={() =>
             this.setState({
-              openDropdown: this.isOpen('aggregators') ? false : 'aggregators',
+              openDropdown: this.isOpen("aggregators") ? false : "aggregators",
             })
           }
-          setValue={this.propUpdater('aggregatorName')}
+          setValue={this.propUpdater("aggregatorName")}
         />
         <a
           role="button"
           className="pvtRowOrder"
           onClick={() =>
-            this.propUpdater('rowOrder')(sortIcons[this.props.rowOrder].next)
+            this.propUpdater("rowOrder")(sortIcons[this.props.rowOrder].next)
           }
         >
           {sortIcons[this.props.rowOrder].rowSymbol}
@@ -581,7 +598,7 @@ excludedValues,
           role="button"
           className="pvtColOrder"
           onClick={() =>
-            this.propUpdater('colOrder')(sortIcons[this.props.colOrder].next)
+            this.propUpdater("colOrder")(sortIcons[this.props.colOrder].next)
           }
         >
           {sortIcons[this.props.colOrder].colSymbol}
@@ -592,9 +609,9 @@ excludedValues,
             key={i}
             current={this.props.vals[i]}
             values={Object.keys(this.state.attrValues).filter(
-              e =>
+              (e) =>
                 !this.props.hiddenAttributes.includes(e) &&
-                !this.props.hiddenFromAggregators.includes(e)
+                !this.props.hiddenFromAggregators.includes(e),
             )}
             open={this.isOpen(`val${i}`)}
             zIndex={this.isOpen(`val${i}`) ? this.state.maxZIndex + 1 : 1}
@@ -603,9 +620,9 @@ excludedValues,
                 openDropdown: this.isOpen(`val${i}`) ? false : `val${i}`,
               })
             }
-            setValue={value =>
+            setValue={(value) =>
               this.sendPropUpdate({
-                vals: {$splice: [[i, 1, value]]},
+                vals: { $splice: [[i, 1, value]] },
               })
             }
           />,
@@ -617,11 +634,11 @@ excludedValues,
 
     const unusedAttrs = Object.keys(this.state.attrValues)
       .filter(
-        e =>
+        (e) =>
           !this.props.rows.includes(e) &&
           !this.props.cols.includes(e) &&
           !this.props.hiddenAttributes.includes(e) &&
-          !this.props.hiddenFromDragDrop.includes(e)
+          !this.props.hiddenFromDragDrop.includes(e),
       )
       .sort(sortAs(this.state.unusedOrder));
 
@@ -630,39 +647,39 @@ excludedValues,
 
     const unusedAttrsCell = this.makeDnDCell(
       unusedAttrs,
-      order => this.setState({unusedOrder: order}),
+      (order) => this.setState({ unusedOrder: order }),
       `pvtAxisContainer pvtUnused ${
-        horizUnused ? 'pvtHorizList' : 'pvtVertList'
-      }`
+        horizUnused ? "pvtHorizList" : "pvtVertList"
+      }`,
     );
 
     const colAttrs = this.props.cols.filter(
-      e =>
+      (e) =>
         !this.props.hiddenAttributes.includes(e) &&
-        !this.props.hiddenFromDragDrop.includes(e)
+        !this.props.hiddenFromDragDrop.includes(e),
     );
 
     const colAttrsCell = this.makeDnDCell(
       colAttrs,
-      this.propUpdater('cols'),
-      'pvtAxisContainer pvtHorizList pvtCols'
+      this.propUpdater("cols"),
+      "pvtAxisContainer pvtHorizList pvtCols",
     );
 
     const rowAttrs = this.props.rows.filter(
-      e =>
+      (e) =>
         !this.props.hiddenAttributes.includes(e) &&
-        !this.props.hiddenFromDragDrop.includes(e)
+        !this.props.hiddenFromDragDrop.includes(e),
     );
     const rowAttrsCell = this.makeDnDCell(
       rowAttrs,
-      this.propUpdater('rows'),
-      'pvtAxisContainer pvtVertList pvtRows'
+      this.propUpdater("rows"),
+      "pvtAxisContainer pvtVertList pvtRows",
     );
     const outputCell = (
       <td className="pvtOutput">
         <PivotTable
           {...update(this.props, {
-            data: {$set: this.state.materializedInput},
+            data: { $set: this.state.materializedInput },
           })}
         />
       </td>
@@ -671,7 +688,7 @@ excludedValues,
     if (horizUnused) {
       return (
         <table className="pvtUi">
-          <tbody onClick={() => this.setState({openDropdown: false})}>
+          <tbody onClick={() => this.setState({ openDropdown: false })}>
             <tr>
               {rendererCell}
               {unusedAttrsCell}
@@ -691,7 +708,7 @@ excludedValues,
 
     return (
       <table className="pvtUi">
-        <tbody onClick={() => this.setState({openDropdown: false})}>
+        <tbody onClick={() => this.setState({ openDropdown: false })}>
           <tr>
             {rendererCell}
             {aggregatorCell}
@@ -724,7 +741,7 @@ PivotTableUI.defaultProps = Object.assign({}, PivotTable.defaultProps, {
   hiddenFromDragDrop: [],
   unusedOrientationCutoff: 85,
   menuLimit: 500,
-max_values:800,
+  max_values: 800,
 });
 
 export default PivotTableUI;
