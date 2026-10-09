@@ -33,28 +33,35 @@ export class DraggableAttribute extends React.Component {
   }
 
 
- matchesFilterFromTo(x) {
-        var from = this.state.filterTextFrom;
-        var to = this.state.filterTextTo;
-        if (!from && !to) return true;
-        if (!x) return false;
-        var [day,month,year] = x.split('/').map(Number);
-        var [dayFrom,monthFrom,yearFrom] = x.split('/').map(Number);
-        var [dayTo,monthTo,yearTo] = x.split('/').map(Number);
-        var current = new Date(year,month-1,day);
-        console.log(current);
-        var start = from ? new Date(from + 'T00:00:00') : null;
-        console.log(start);
-        var end = to ? new Date(to + 'T23:59:59') : null;
-        console.log(end)
+matchesFilterFromTo(x) {
+    var from = this.state.filterTextFrom;
+    var to = this.state.filterTextTo;
 
-        if(isNaN(current.getTime())) return false;
-        if(start && current < start) return false;
-        if (end && current > end) return false;
+    if (!from && !to) return true;
+    if (!x) return false;
 
-        return true;
+    // Converte x da DD/MM/YYYY
+    var [day, month, year] = x.split('/').map(Number);
 
-      }
+    var current = new Date(year, month - 1, day);
+
+    // Converte from e to da YYYY-MM-DD
+    var start = from ? new Date(from + 'T00:00:00') : null;
+    var end = to ? new Date(to + 'T23:59:59') : null;
+
+    console.log("Current:", current);
+    console.log("Start:", start);
+    console.log("End:", end);
+
+    if (isNaN(current.getTime())) return false;
+
+    if (start && current < start) return false;
+    if (end && current > end) return false;
+
+    return true;
+}
+
+	
 
   selectOnly(e, value) {
     e.stopPropagation();
